@@ -1,6 +1,7 @@
 package pages;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -15,22 +16,28 @@ import static org.junit.Assert.*;
 
 public class MainPageTest {
 
-    private WebDriver driver;
+    // создали драйвер для браузера Chrome.
+    ChromeOptions options = new ChromeOptions();
+    WebDriver driver = new ChromeDriver(options);
+    MainPage objMainPage = new MainPage(driver);
+    // перешли на страницу тестового приложения
+    String url = "https://qa-scooter.praktikum-services.ru/";
+
+    @Before
+    public void testPreparing(){
+        driver.get(url);
+        objMainPage.clickButtonEveryoneIsUsedToIt();
+
+        new WebDriverWait(driver,3);
+    }
+
+    //private WebDriver driver;
 
     @Test
     public void checkFAQ() {
-        // создали драйвер для браузера Chrome.
-        System.setProperty("webdriver.chrome.driver", "/Users/evgeniybatuev/Downloads/chromedriver_mac64/chromedriver");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        WebDriver driver = new ChromeDriver(options);
-
-        // перешли на страницу тестового приложения
-        driver.get("https://qa-scooter.praktikum-services.ru/");
 
         // Создай объект класса Страницы заказа.
         MainPage objMainPage = new MainPage(driver);
-        objMainPage.clickButtonEveryoneIsUsedToIt();
         // Скролл до аккордиона
         WebElement element = driver.findElement(By.className("Home_FAQ__3uVm4"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
